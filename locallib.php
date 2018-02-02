@@ -1563,6 +1563,16 @@ function game_filtertext( $text, $courseid) {
     $formatoptions = new stdClass();
     $formatoptions->noclean = true;
     $formatoptions->filter = 1;
+    $formatoptions->newlines = false;
+    // Remove empty lines and editor artifacts.
+    $text = preg_replace('/<p>\n*/i', '<p>', $text);
+    $text = preg_replace('/<br>$/i', '', $text);
+    $text = preg_replace('/<\/p><br><\/p>/i', '</p>', $text);
+    $text = preg_replace('/<p><p>/i', '<p>', $text);
+    $text = preg_replace('/<\/p><\/p>/i', '</p>', $text);
+    $text = preg_replace('/<p>\n*<\/p>/i', '', $text);
+    $text = preg_replace('/<p>\n*<br><\/p>/i', '', $text);
+
     $text = trim( format_text( $text, FORMAT_MOODLE, $formatoptions));
 
     $start = '<div class="text_to_html">';
@@ -1926,7 +1936,7 @@ foreach ($anss as $answer) {
         </tr>
 <?php
 }
-?>        
+?>
     </table>
 </div>
 <?php
